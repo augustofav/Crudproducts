@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Data.SQLite;
+using System.IO;
 using System.Windows.Forms;
+
 
 namespace CrudProdutos
 {
@@ -16,5 +13,201 @@ namespace CrudProdutos
         {
             InitializeComponent();
         }
+
+        private string strConexao = $@"Data Source={Application.StartupPath}\cnxSQLite.db;";
+
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            try
+            {
+                CriarBancoDeDados();
+                Console.WriteLine("entrou gayzinho");
+                using (SQLiteConnection conexao = new SQLiteConnection(strConexao))
+                {
+                    if (conexao.State == ConnectionState.Closed)
+                    {
+                        conexao.Open();
+                      
+                    }
+                }
+                AtualizarGrid(); 
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Erro ao conectar: {ex.Message}", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+
+        private void CriarBancoDeDados()
+        {
+         
+            string caminhoBanco = Application.StartupPath + @"\cnxSQLite.db";
+            MessageBox.Show($"Caminho do banco de dados: {caminhoBanco}", "Caminho do Banco de Dados");
+
+            SQLiteConnection.CreateFile(caminhoBanco);
+
+            if (!File.Exists(caminhoBanco))
+            {
+                Console.WriteLine("entrou no criar banco"); 
+                SQLiteConnection.CreateFile(caminhoBanco);
+
+                using (SQLiteConnection conexao = new SQLiteConnection(strConexao))
+                {
+                    conexao.Open();
+
+                    string query = @"
+                    CREATE TABLE IF NOT EXISTS Produtos (
+                        Id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        Nome TEXT NOT NULL,
+                        Preco REAL NOT NULL,
+                        Quantidade INTEGER NOT NULL
+                    );";
+
+                    using (SQLiteCommand cmd = new SQLiteCommand(query, conexao))
+                    {
+                        cmd.ExecuteNonQuery();
+                    } 
+                }
+            }
+        }
+
+        private void label2_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label3_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void numericUpDown1_ValueChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            string nome = txtNome.Text;
+            if (double.TryParse(txtPreco.Text, out double preco) && int.TryParse(txtQuantidade.Text, out int quantidade))
+            {
+                if (!string.IsNullOrWhiteSpace(nome))
+                { 
+                    Console.WriteLine("dada");
+                    Products.InsertProduct(strConexao, nome, preco, quantidade);
+                    AtualizarGrid();
+                    LimparCampos();
+                    
+                }
+                else
+                {
+                    MessageBox.Show("O campo Nome nao pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Preço e Quantidade devem ser valores válidos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            LimparCampos();
+        }
+
+        private void LimparCampos()
+        {
+            txtNome.Clear();
+            txtPreco.Clear();
+            txtQuantidade.Clear(); 
+        }
+
+        private void AtualizarGrid()
+        {
+            using (SQLiteConnection conexao = new SQLiteConnection(strConexao))
+            {
+                conexao.Open();
+
+                string query = "SELECT * FROM Produtos";
+                SQLiteDataAdapter adapter = new SQLiteDataAdapter(query, conexao);
+
+                DataTable dt = new DataTable();
+                adapter.Fill(dt);
+
+                dgvProdutos.DataSource = dt;
+               
+            }
+        }
+
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void txtPreco_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click_2(object sender, EventArgs e)
+        {
+            if (dgvProdutos.SelectedRows.Count > 0)
+            {
+                int id = Convert.ToInt32(dgvProdutos.SelectedRows[0].Cells["Id"].Value);
+
+                if (MessageBox.Show("Tem certeza que deseja excluir este produto?", "Confirmação", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Products.DeleteProduct(strConexao, id);
+                    AtualizarGrid();
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecione um produto para excluir.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private void button1_Click_3(object sender, EventArgs e)
+        {
+            if (dgvProdutos.SelectedRows.Count > 0)
+            {
+                int id = Convert.ToInt32(dgvProdutos.SelectedRows[0].Cells["Id"].Value);
+                string nome = txtNome.Text;
+                if (double.TryParse(txtPreco.Text, out double preco) && int.TryParse(txtQuantidade.Text, out int quantidade))
+                {
+                    if (!string.IsNullOrWhiteSpace(nome))
+                    {
+                        Products.UpdateProduct(id, strConexao, nome, preco, quantidade);
+                        AtualizarGrid();
+                        LimparCampos();
+                    }
+                    else
+                    {
+                        MessageBox.Show("O campo Nome não pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Preço e Quantidade devem ser valores válidos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecione um produto para editar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
     }
 }
+
+
+
+
+
