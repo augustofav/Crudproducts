@@ -21,7 +21,6 @@ namespace CrudProdutos
             try
             {
                 CriarBancoDeDados();
-                Console.WriteLine("entrou gayzinho");
                 using (SQLiteConnection conexao = new SQLiteConnection(strConexao))
                 {
                     if (conexao.State == ConnectionState.Closed)
@@ -92,41 +91,56 @@ namespace CrudProdutos
 
         }
 
+        private bool ValidarCampos(string nome, decimal preco, int quantidade)
+        {
+            if (string.IsNullOrWhiteSpace(nome))
+            {
+                MessageBox.Show("O campo Nome não pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if (preco <= 0)
+            {
+                MessageBox.Show("O preço deve ser maior que 0.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            if (quantidade <= 0)
+            {
+                MessageBox.Show("A quantidade deve ser maior que zero.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return false;
+            }
+            return true;
+        }
+
+
         private void button1_Click(object sender, EventArgs e)
         {
             string nome = txtNome.Text;
-            if (double.TryParse(txtPreco.Text, out double preco) && int.TryParse(txtQuantidade.Text, out int quantidade))
+            decimal preco = numericUpDownPreco.Value;
+            int quantidade = (int)numericUpDownQuantidade.Value;
+
+            if (ValidarCampos(nome, preco, quantidade))
             {
-                if (!string.IsNullOrWhiteSpace(nome))
-                { 
-                    Console.WriteLine("dada");
-                    Products.InsertProduct(strConexao, nome, preco, quantidade);
-                    AtualizarGrid();
-                    LimparCampos();
-                    
-                }
-                else
-                {
-                    MessageBox.Show("O campo Nome nao pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Preço e Quantidade devem ser valores válidos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                Products.InsertProduct(strConexao, nome, (double)preco, quantidade);
+                AtualizarGrid();
+                LimparCampos();
+                MessageBox.Show("Produto adicionado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
+
+
 
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             LimparCampos();
+
         }
 
         private void LimparCampos()
         {
             txtNome.Clear();
-            txtPreco.Clear();
-            txtQuantidade.Clear(); 
+            numericUpDownPreco.Value = 1;
+            numericUpDownQuantidade.Value = 1;
         }
 
         private void AtualizarGrid()
@@ -181,28 +195,33 @@ namespace CrudProdutos
             {
                 int id = Convert.ToInt32(dgvProdutos.SelectedRows[0].Cells["Id"].Value);
                 string nome = txtNome.Text;
-                if (double.TryParse(txtPreco.Text, out double preco) && int.TryParse(txtQuantidade.Text, out int quantidade))
+                decimal preco = numericUpDownPreco.Value;
+                int quantidade = (int)numericUpDownQuantidade.Value;
+
+                if (ValidarCampos(nome, preco, quantidade))
                 {
-                    if (!string.IsNullOrWhiteSpace(nome))
-                    {
-                        Products.UpdateProduct(id, strConexao, nome, preco, quantidade);
-                        AtualizarGrid();
-                        LimparCampos();
-                    }
-                    else
-                    {
-                        MessageBox.Show("O campo Nome não pode estar vazio.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Preço e Quantidade devem ser valores válidos.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    Products.UpdateProduct(id, strConexao, nome, (double)preco, quantidade);
+                    AtualizarGrid();
+                    LimparCampos();
+                    MessageBox.Show("Produto atualizado com sucesso!", "Sucesso", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
             }
             else
             {
                 MessageBox.Show("Selecione um produto para editar.", "Erro", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
+        }
+    
+
+
+        private void numericUpDown1_ValueChanged_1(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

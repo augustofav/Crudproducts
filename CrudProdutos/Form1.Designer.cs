@@ -30,22 +30,25 @@
         {
             this.label2 = new System.Windows.Forms.Label();
             this.txtNome = new System.Windows.Forms.TextBox();
-            this.txtPreco = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.btnAdicionar_Click = new System.Windows.Forms.Button();
             this.btnLimpar_Click = new System.Windows.Forms.Button();
-            this.txtQuantidade = new System.Windows.Forms.TextBox();
             this.dgvProdutos = new System.Windows.Forms.DataGridView();
             this.btnExcluir = new System.Windows.Forms.Button();
             this.btnEditar = new System.Windows.Forms.Button();
+            this.numericUpDownQuantidade = new System.Windows.Forms.NumericUpDown();
+            this.numericUpDownPreco = new System.Windows.Forms.NumericUpDown();
+            this.label5 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvProdutos)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantidade)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPreco)).BeginInit();
             this.SuspendLayout();
             // 
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(12, 35);
+            this.label2.Location = new System.Drawing.Point(17, 23);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(35, 13);
             this.label2.TabIndex = 0;
@@ -54,23 +57,15 @@
             // 
             // txtNome
             // 
-            this.txtNome.Location = new System.Drawing.Point(12, 51);
+            this.txtNome.Location = new System.Drawing.Point(18, 39);
             this.txtNome.Name = "txtNome";
-            this.txtNome.Size = new System.Drawing.Size(147, 20);
+            this.txtNome.Size = new System.Drawing.Size(120, 20);
             this.txtNome.TabIndex = 1;
-            // 
-            // txtPreco
-            // 
-            this.txtPreco.Location = new System.Drawing.Point(15, 95);
-            this.txtPreco.Name = "txtPreco";
-            this.txtPreco.Size = new System.Drawing.Size(144, 20);
-            this.txtPreco.TabIndex = 3;
-            this.txtPreco.TextChanged += new System.EventHandler(this.txtPreco_TextChanged);
             // 
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 79);
+            this.label3.Location = new System.Drawing.Point(17, 74);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(35, 13);
             this.label3.TabIndex = 2;
@@ -89,8 +84,9 @@
             // 
             // btnAdicionar_Click
             // 
-            this.btnAdicionar_Click.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnAdicionar_Click.Location = new System.Drawing.Point(18, 190);
+            this.btnAdicionar_Click.BackColor = System.Drawing.SystemColors.Window;
+            this.btnAdicionar_Click.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnAdicionar_Click.Location = new System.Drawing.Point(18, 383);
             this.btnAdicionar_Click.Name = "btnAdicionar_Click";
             this.btnAdicionar_Click.Size = new System.Drawing.Size(75, 23);
             this.btnAdicionar_Click.TabIndex = 6;
@@ -100,8 +96,8 @@
             // 
             // btnLimpar_Click
             // 
-            this.btnLimpar_Click.BackColor = System.Drawing.Color.DodgerBlue;
-            this.btnLimpar_Click.Location = new System.Drawing.Point(275, 190);
+            this.btnLimpar_Click.BackColor = System.Drawing.SystemColors.Window;
+            this.btnLimpar_Click.Location = new System.Drawing.Point(263, 383);
             this.btnLimpar_Click.Name = "btnLimpar_Click";
             this.btnLimpar_Click.Size = new System.Drawing.Size(75, 23);
             this.btnLimpar_Click.TabIndex = 9;
@@ -109,25 +105,17 @@
             this.btnLimpar_Click.UseVisualStyleBackColor = false;
             this.btnLimpar_Click.Click += new System.EventHandler(this.button1_Click_1);
             // 
-            // txtQuantidade
-            // 
-            this.txtQuantidade.Location = new System.Drawing.Point(18, 139);
-            this.txtQuantidade.Name = "txtQuantidade";
-            this.txtQuantidade.Size = new System.Drawing.Size(141, 20);
-            this.txtQuantidade.TabIndex = 10;
-            this.txtQuantidade.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
-            // 
             // dgvProdutos
             // 
             this.dgvProdutos.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvProdutos.Location = new System.Drawing.Point(204, 9);
+            this.dgvProdutos.Location = new System.Drawing.Point(18, 186);
             this.dgvProdutos.Name = "dgvProdutos";
-            this.dgvProdutos.Size = new System.Drawing.Size(541, 150);
+            this.dgvProdutos.Size = new System.Drawing.Size(454, 154);
             this.dgvProdutos.TabIndex = 11;
             // 
             // btnExcluir
             // 
-            this.btnExcluir.Location = new System.Drawing.Point(194, 189);
+            this.btnExcluir.Location = new System.Drawing.Point(182, 383);
             this.btnExcluir.Name = "btnExcluir";
             this.btnExcluir.Size = new System.Drawing.Size(75, 23);
             this.btnExcluir.TabIndex = 12;
@@ -137,7 +125,7 @@
             // 
             // btnEditar
             // 
-            this.btnEditar.Location = new System.Drawing.Point(99, 190);
+            this.btnEditar.Location = new System.Drawing.Point(101, 383);
             this.btnEditar.Name = "btnEditar";
             this.btnEditar.Size = new System.Drawing.Size(75, 23);
             this.btnEditar.TabIndex = 13;
@@ -145,22 +133,71 @@
             this.btnEditar.UseVisualStyleBackColor = true;
             this.btnEditar.Click += new System.EventHandler(this.button1_Click_3);
             // 
+            // numericUpDownQuantidade
+            // 
+            this.numericUpDownQuantidade.Location = new System.Drawing.Point(18, 139);
+            this.numericUpDownQuantidade.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownQuantidade.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownQuantidade.Name = "numericUpDownQuantidade";
+            this.numericUpDownQuantidade.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownQuantidade.TabIndex = 14;
+            this.numericUpDownQuantidade.Value = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this.numericUpDownQuantidade.ValueChanged += new System.EventHandler(this.numericUpDown1_ValueChanged_1);
+            // 
+            // numericUpDownPreco
+            // 
+            this.numericUpDownPreco.DecimalPlaces = 2;
+            this.numericUpDownPreco.Location = new System.Drawing.Point(18, 90);
+            this.numericUpDownPreco.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this.numericUpDownPreco.Name = "numericUpDownPreco";
+            this.numericUpDownPreco.Size = new System.Drawing.Size(120, 20);
+            this.numericUpDownPreco.TabIndex = 15;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Location = new System.Drawing.Point(17, 357);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(57, 13);
+            this.label5.TabIndex = 16;
+            this.label5.Text = "Comandos";
+            this.label5.Click += new System.EventHandler(this.label5_Click);
+            // 
             // Form1
             // 
-            this.ClientSize = new System.Drawing.Size(741, 301);
+            this.ClientSize = new System.Drawing.Size(541, 432);
+            this.Controls.Add(this.label5);
+            this.Controls.Add(this.numericUpDownPreco);
+            this.Controls.Add(this.numericUpDownQuantidade);
             this.Controls.Add(this.btnEditar);
             this.Controls.Add(this.btnExcluir);
             this.Controls.Add(this.dgvProdutos);
-            this.Controls.Add(this.txtQuantidade);
             this.Controls.Add(this.btnLimpar_Click);
             this.Controls.Add(this.btnAdicionar_Click);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.txtPreco);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.txtNome);
             this.Controls.Add(this.label2);
             this.Name = "Form1";
             ((System.ComponentModel.ISupportInitialize)(this.dgvProdutos)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownQuantidade)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numericUpDownPreco)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -171,15 +208,16 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox txtNome;
-        private System.Windows.Forms.TextBox txtPreco;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Button btnAdicionar_Click;
         private System.Windows.Forms.Button btnLimpar_Click;
-        private System.Windows.Forms.TextBox txtQuantidade;
         private System.Windows.Forms.DataGridView dgvProdutos;
         private System.Windows.Forms.Button btnExcluir;
         private System.Windows.Forms.Button btnEditar;
+        private System.Windows.Forms.NumericUpDown numericUpDownQuantidade;
+        private System.Windows.Forms.NumericUpDown numericUpDownPreco;
+        private System.Windows.Forms.Label label5;
     }
 }
 
